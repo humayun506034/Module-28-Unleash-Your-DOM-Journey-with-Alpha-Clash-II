@@ -20,6 +20,15 @@ function play() {
 */
 function handleKeyboardKeyupEvent(event) {
     const playerPressed = event.key;
+    // console.log('player pressed ',playerPressed);
+
+    //stop the game if press "Esc"
+    if(playerPressed === 'Escape'){
+        gameOver();
+    }
+
+
+
     console.log('player pressed', playerPressed);
     //get the expected to press
     const currentAlphabetElement = document.getElementById('current-alphabet');
@@ -68,16 +77,7 @@ function handleKeyboardKeyupEvent(event) {
     }
     else {
 
-        //step 1: get the currect life number
-        console.log('you missed. you lost a life.');
-
-        const currentLife = getTextElementValueById('current-life');
-        //step -2: reduce the life count
-        //step -3: display the updated life count
-        const updatedLife = currentLife - 1;
-        setTextElementValueById('current-life',updatedLife);
-
-        // ---------------------------------------//
+        // -------------First way--------------------------//
         /*
          //step 1: get the currect life number
         const currentLifeElement = document.getElementById('current-life');
@@ -89,6 +89,27 @@ function handleKeyboardKeyupEvent(event) {
         currentLifeElement.innerText = newLife;
 
         */
+
+
+        // -----------------OR----------------------//
+
+        //step 1: get the currect life number
+        console.log('you missed. you lost a life.');
+
+        const currentLife = getTextElementValueById('current-life');
+        //step -2: reduce the life count
+        //step -3: display the updated life count
+        const updatedLife = currentLife - 1;
+        setTextElementValueById('current-life', updatedLife);
+
+        //game end
+
+        if (updatedLife === 0) {
+            gameOver();
+
+        }
+
+
     }
 }
 
@@ -109,8 +130,34 @@ function continueGame() {
 }
 
 function play() {
+
+    //hide everything show only the playground
+
     hideElementById('home-screen');
-    showElementById('play-ground')
+    hideElementById('final-score');
+    showElementById('play-ground');
+
+    //reset score and life
+    setTextElementValueById('current-life', 5);
+    setTextElementValueById('current-score', 0)
+
     continueGame();
 }
 
+function gameOver() {
+    hideElementById('play-ground');
+    showElementById('final-score');
+    //update final score
+    //step 1: get the final score
+    const lastScore = getTextElementValueById('current-score');
+    console.log(lastScore);
+    //step 1: set the final score
+    setTextElementValueById('last-score',lastScore);
+
+    //claear the last selected alphabet highlight
+
+    const currentAlphabet=getElementTextById('current-alphabet');
+    // console.log(currentAlphabet);
+    removeBackgroundColorById(currentAlphabet);
+
+}
